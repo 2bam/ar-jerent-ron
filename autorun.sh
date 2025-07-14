@@ -18,7 +18,22 @@ $OUTPUT
         --no-wrap \
         --text "$BODY" \
         --ok-label "OK (cierra en 60 seg.)" \
-        --timeout=60 2>/dev/null
+        --timeout=60 \
+        2>/dev/null
+fi
+
+LC_ALL=C zenity \
+    --info \
+    --no-wrap \
+    --text "El emulador de nes iniciara automaticamente en 10 segundos y se escondera el escritorio.\n\n
+Para en cambio configurar el sistema apretar el boton." \
+    --ok-label="No iniciar y configurar sistema" \
+    --timeout=10 \
+    2>/dev/null
+
+# Zenity exitcode 5 significa timeout. Cualquier otro input frena el autorun.
+if [[ $? != 5 ]]; then
+    exit 1
 fi
 
 # Especifico a Raspberry Pi OS: Desactivar barra de tareas del escritorio para,
